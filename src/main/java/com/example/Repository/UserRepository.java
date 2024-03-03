@@ -3,15 +3,22 @@ package com.example.Repository;
 import com.example.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,String>,JpaSpecificationExecutor<User> {
-
-
-    //获取未删除的所有用户
+public interface UserRepository extends JpaRepository<User, String>, JpaSpecificationExecutor<User> {
     List<User> findAllByDelStatus(boolean delStatus);
+
+    @Query("SELECT u FROM User u WHERE u.name = ?1 AND u.delStatus = false")
+    List<User> findActiveUsersByName(String name);
+
+    Optional<User> findByName(String name);
+
+    @Query("SELECT u FROM User u WHERE u.heartRate BETWEEN ?1 AND ?2 AND u.delStatus = false")
+
+    List<User> findUsersByHeartRateRange(Integer minRate, Integer maxRate);
 }

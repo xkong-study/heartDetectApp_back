@@ -18,6 +18,15 @@ public class User {
     @Column(name = "id", columnDefinition = "varchar(32) COMMENT '数据主键ID'")
     private String id;
 
+    @Column(name = "name", columnDefinition = "varchar(32) COMMENT '数据主键ID'")
+    private String name;
+
+    @Column(name = "email", columnDefinition = "varchar(32) COMMENT '数据主键ID'")
+    private String email;
+
+    @Column(name = "password", columnDefinition = "varchar(32) COMMENT '数据主键ID'")
+    private String password;
+
     @Column(name = "heartRate", columnDefinition = "int(11) COMMENT '心率'")
     private Integer heartRate;
 
@@ -34,6 +43,12 @@ public class User {
     @Column(name = "delStatus", columnDefinition = "bit(1) COMMENT '删除标记（0：正常，1：删除）'")
     private boolean delStatus;
 
+    @Column(name = "signature", columnDefinition = "varchar(32) COMMENT '数据主键ID'")
+    private String signature;
+
+    @Column(name = "status", columnDefinition = "varchar(32) COMMENT '数据主键ID'")
+    private String status;
+
     // Getters and Setters
     public String getId() {
         return id;
@@ -41,6 +56,30 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Integer getHeartRate() {
@@ -57,6 +96,14 @@ public class User {
 
     public void setHrv(Integer hrv) {
         this.hrv = hrv;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 
     public Date getRecordDate() {
@@ -81,6 +128,26 @@ public class User {
 
     public void setPressure(Integer pressure) {
         this.pressure = pressure;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public User() {
+        // 无参构造函数
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 
 }
