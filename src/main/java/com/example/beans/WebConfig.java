@@ -57,10 +57,11 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000")
+                        .allowedOrigins("*") // 注意：实际上这里不会设置为 *，因为下面我们自定义了响应头
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
-                        .allowCredentials(true);
+                        .maxAge(3600)
+                        .exposedHeaders("Access-Control-Allow-Origin");
             }
 
             @Override

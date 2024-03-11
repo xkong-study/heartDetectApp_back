@@ -5,7 +5,6 @@ import com.example.entity.User;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -35,6 +34,13 @@ public class UserService {
         return "添加成功！";
     }
 
+    public boolean login(String name, String password) {
+        User user = userRepository.findByName(name).orElse(null);
+        System.out.println(password);
+        System.out.println("----");
+        System.out.println(user);
+        return user != null && user.getPassword().equals(password);
+    }
 
     //删除
     public String del(String data){

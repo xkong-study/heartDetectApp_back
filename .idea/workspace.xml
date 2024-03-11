@@ -4,17 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12d82378-0739-430a-926b-8813a5f6474e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/DTO/LoginRequest.java" afterDir="false" />
+    <list default="true" id="12d82378-0739-430a-926b-8813a5f6474e" name="Changes" comment="加了心率历史纪录功能 登陆注册等">
+      <change afterPath="$PROJECT_DIR$/.idea/heartDetectApp_back.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ServletInitializer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Swagger2.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/beans/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/beans/WebConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,11 +71,12 @@
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;ruby.rails.projectView.checked&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.importing&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -124,8 +127,29 @@
       <workItem from="1709329710310" duration="443000" />
       <workItem from="1709335358788" duration="594000" />
       <workItem from="1709455553261" duration="9000" />
-      <workItem from="1709468734871" duration="7301000" />
+      <workItem from="1709468734871" duration="8218000" />
+      <workItem from="1709565651831" duration="1220000" />
+      <workItem from="1709583709390" duration="5641000" />
+      <workItem from="1709595861054" duration="4168000" />
+      <workItem from="1709632399020" duration="13000" />
+      <workItem from="1709634366676" duration="4038000" />
+      <workItem from="1709998742227" duration="734000" />
+      <workItem from="1709999694573" duration="356000" />
+      <workItem from="1710076287157" duration="56000" />
+      <workItem from="1710077343748" duration="22000" />
+      <workItem from="1710077380305" duration="10373000" />
+      <workItem from="1710103709463" duration="654000" />
+      <workItem from="1710171711500" duration="743000" />
     </task>
+    <task id="LOCAL-00001" summary="加了心率历史纪录功能 登陆注册等">
+      <option name="closed" value="true" />
+      <created>1709505586851</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1709505586851</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -141,5 +165,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="加了心率历史纪录功能 登陆注册等" />
+    <option name="LAST_COMMIT_MESSAGE" value="加了心率历史纪录功能 登陆注册等" />
   </component>
 </project>

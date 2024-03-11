@@ -8,19 +8,19 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
+@Slf4j
 @RequestMapping(value = "user")
 @Api(description = "人员管理")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     @Autowired
@@ -50,25 +50,25 @@ public class UserController {
 
     @Autowired
     public UserRepository userRepository;
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        System.out.println("Received login request: " + user);
-        Optional<User> userOptional = userRepository.findByName(user.getName());
 
-        if (userOptional.isPresent()) {
-            User user1 = userOptional.get();
-            if (user1.getPassword().equals(user.getPassword())) {
-                return ResponseEntity.ok().body("Login successful for user: " + user.getName());
-            }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        boolean isLoggedIn = userService.login(loginRequest.getName(), loginRequest.getPassword());
+        log.info(loginRequest.getName(),loginRequest.getPassword());
+        if (isLoggedIn) {
+            return ResponseEntity.ok().body("Login successful.");
+        } else {
+            return ResponseEntity.status(401).body("Invalid credentials.");
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
+
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User newUser) {
         User savedUser = userRepository.save(newUser);
-        return ResponseEntity.ok(savedUser); // Consider returning a DTO instead for security
+        return ResponseEntity.ok(savedUser);
     }
+
 
     @PostMapping("/update")
     public ResponseEntity<?> updateProfile(@RequestBody User userDetails) {

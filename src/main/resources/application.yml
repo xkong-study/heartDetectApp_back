@@ -17,3 +17,7 @@ spring:
 #端口设置
 server:
   port: 8084
+
+logging:
+  level:
+    root=DEBUG: Debug
