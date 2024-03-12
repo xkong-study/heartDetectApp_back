@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.xml.crypto.Data;
 import java.util.Date;
 
 
@@ -32,6 +31,9 @@ public class User {
 
     @Column(name = "hrv", columnDefinition = "int(11) COMMENT '心率变异性'")
     private Integer hrv;
+
+    @Column(name = "avatar", columnDefinition = "LONGBLOB COMMENT '头像'")
+    private byte[] avatar; // 如果存储二进制数据
 
     @Column(name = "pressure", columnDefinition = "int(11) COMMENT '血压'")
     private Integer pressure;
@@ -138,16 +140,19 @@ public class User {
         this.email = email;
     }
 
+    public byte[] getAvatar(){
+        return avatar;
+    }
+
+    public void setAvatar(byte[] bytes){
+        this.avatar = bytes;
+    }
+
     public User() {
-        // 无参构造函数
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public User(String name, byte[] avatar) {
+        this.name = name;
+        this.avatar = avatar;
     }
-
 }

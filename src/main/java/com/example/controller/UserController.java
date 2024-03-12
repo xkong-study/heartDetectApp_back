@@ -9,11 +9,18 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import java.awt.image.BufferedImage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import javax.imageio.ImageIO;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 
 @RestController
@@ -54,21 +61,62 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         boolean isLoggedIn = userService.login(loginRequest.getName(), loginRequest.getPassword());
-        log.info(loginRequest.getName(),loginRequest.getPassword());
         if (isLoggedIn) {
-            return ResponseEntity.ok().body("Login successful.");
-        } else {
-            return ResponseEntity.status(401).body("Invalid credentials.");
-        }
-    }
+            Optional<User> userOptional = userRepository.findByName(loginRequest.getName());
 
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                String name = user.getName();
+                byte[] avatar = user.getAvatar();
+                Map<String, Object> userResponse = new HashMap<>();
+                userResponse.put("name", name);
+                userResponse.put("avatar", avatar);
+
+                return ResponseEntity.ok().body(userResponse);
+            } else {
+                return ResponseEntity.notFound().build(); // User not found
+            }
+        }
+        return null;
+    }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User newUser) {
-        User savedUser = userRepository.save(newUser);
-        return ResponseEntity.ok(savedUser);
-    }
+    public ResponseEntity<?> registerUser(
+            @RequestParam("name") String name,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam("avatar") MultipartFile avatar) {
+        try {
+            User newUser = new User();
+            newUser.setName(name);
+            newUser.setEmail(email);
+            newUser.setPassword(password);
 
+            if (!avatar.isEmpty()) {
+                InputStream inputStream = avatar.getInputStream();
+                BufferedImage originalImage = ImageIO.read(inputStream);
+
+                int newWidth = 100; // 调整为你需要的宽度
+                int newHeight = (int) (originalImage.getHeight() * ((double) newWidth / originalImage.getWidth()));
+                BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+                resizedImage.getGraphics().drawImage(originalImage.getScaledInstance(newWidth, newHeight, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
+
+                // 将压缩后的图像转换为字节数组
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ImageIO.write(resizedImage, "png", outputStream);
+
+                newUser.setAvatar(outputStream.toByteArray());
+                log.info(Arrays.toString(outputStream.toByteArray()));
+                outputStream.close();
+                inputStream.close();
+            }
+
+            User savedUser = userRepository.save(newUser);
+            return ResponseEntity.ok(savedUser);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save user avatar");
+        }
+    }
 
     @PostMapping("/update")
     public ResponseEntity<?> updateProfile(@RequestBody User userDetails) {
