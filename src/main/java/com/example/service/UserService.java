@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 
 @Service
@@ -34,12 +36,18 @@ public class UserService {
         return "添加成功！";
     }
 
-    public boolean login(String name, String password) {
-        User user = userRepository.findByName(name).orElse(null);
-        System.out.println(password);
-        System.out.println("----");
-        System.out.println(user);
-        return user != null && user.getPassword().equals(password);
+    public boolean login(String name, String password, String doctor) {
+        if(doctor.isEmpty()) {
+            User user = userRepository.findByName(name).orElse(null);
+            System.out.println(password);
+            System.out.println("----");
+            System.out.println(user);
+            return user != null && user.getPassword().equals(password);
+        }
+        else{
+            Optional<User> user = userRepository.findByDoctor(doctor);
+            return user != null;
+        }
     }
 
     //删除

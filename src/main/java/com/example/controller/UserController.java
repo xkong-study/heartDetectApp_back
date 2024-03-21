@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.DTO.LoginRequest;
+import com.example.DTO.UserInfo;
 import com.example.Repository.UserRepository;
 import com.example.entity.User;
 import com.example.service.UserService;
@@ -8,8 +9,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.properties.ObjectProperty;
 import lombok.extern.slf4j.Slf4j;
 import java.awt.image.BufferedImage;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -60,24 +65,36 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        boolean isLoggedIn = userService.login(loginRequest.getName(), loginRequest.getPassword());
-        if (isLoggedIn) {
-            Optional<User> userOptional = userRepository.findByName(loginRequest.getName());
+        String doctor = loginRequest.getDoctor();
+        String name = loginRequest.getName();
+        System.out.println(doctor);
+        System.out.println(name);
+        String password = loginRequest.getPassword();
+        Optional<User> userOptional;
 
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-                String name = user.getName();
-                byte[] avatar = user.getAvatar();
-                Map<String, Object> userResponse = new HashMap<>();
-                userResponse.put("name", name);
-                userResponse.put("avatar", avatar);
-
-                return ResponseEntity.ok().body(userResponse);
-            } else {
-                return ResponseEntity.notFound().build(); // User not found
-            }
+        if (doctor != null && !doctor.isEmpty()) {
+            userOptional = userRepository.findTopByDoctor(doctor);
+        } else {
+            userOptional = userRepository.findTopByName(name);
         }
-        return null;
+
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        User user = userOptional.get();
+        if (!password.equals(user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Map<String, Object> userResponse = new HashMap<>();
+        userResponse.put("name", user.getName());
+        userResponse.put("avatar", user.getAvatar());
+        if (doctor != null && !doctor.isEmpty()) {
+            userResponse.put("doctor", user.getDoctor());
+        }
+
+        return ResponseEntity.ok().body(userResponse);
     }
 
     @PostMapping("/register")
@@ -132,6 +149,36 @@ public class UserController {
             return ResponseEntity.ok().body("Profile updated successfully");
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/listPatients/{doctorName}")
+    public ResponseEntity<List<UserInfo>> getAllPatientsByDoctor(@PathVariable String doctorName) {
+        System.out.println(doctorName);
+        List<User> users = userRepository.findAllByDoctor(doctorName);
+        List<UserInfo> userInfos = users.stream().map(user -> {
+            UserInfo userInfo = new UserInfo();
+            BeanUtils.copyProperties(user, userInfo);
+            return userInfo;
+        }).collect(Collectors.toList());
+        if (users.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(userInfos);
+    }
+
+    @PostMapping("/sendAdvice")
+    public ResponseEntity<?> sendAdvice(@RequestBody User user){
+        List<User> users = userRepository.findAllByName(user.getName());
+        String temp = user.getStatus();
+        users.stream().map(item -> {
+            item.setStatus(temp);
+            userRepository.save(item);
+            return item;
+        }).collect(Collectors.toList());
+        if (users.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok("success");
     }
 
 }
